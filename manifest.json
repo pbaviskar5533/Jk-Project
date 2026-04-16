@@ -1,0 +1,21 @@
+{
+  "name": "JK Pulse News",
+  "short_name": "JK Pulse",
+  "description": "Next-Gen Regional News Platform",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0A0F1E",
+  "theme_color": "#E8003D",
+  "icons": [
+    {
+      "src": "https://api.dicebear.com/7.x/initials/svg?seed=JK&backgroundColor=E8003D",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "https://api.dicebear.com/7.x/initials/svg?seed=JK&backgroundColor=E8003D",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
