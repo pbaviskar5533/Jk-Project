@@ -386,32 +386,35 @@ async function init() {
     // 1. Setup Theme
     applyTheme(APP_STATE.theme);
 
-    // Fetch live news dynamically
-    await fetchLiveNews();
-
-    // 2. Populate Ticker
+    // 2. Initial Setup: Populate Ticker with static items first
     DOM.tickerContent.innerHTML = [...tickerItems, ...tickerItems].map(t => `<span>${t}</span>`).join('');
 
-    // 3. Render Hero Carousel (Home)
+    // 3. Render Hero Carousel and Static Content immediately so site isn't empty
     renderHeroCarousel();
-
-    // 4. Render Sidebar widgets
     renderSidebarWidgets();
-
-    // 5. Render Notifications
     renderNotifications();
-
-    // 6. Setup Mobile Nav links clones
     setupMobileNav();
 
-    // 7. Route to initial section or hash
+    // 4. Route to current section (Hash or Home)
     const hash = window.location.hash.replace('#', '') || 'home';
     switchSection(hash);
 
-    // 8. Event Listeners
+    // 5. Event Listeners
     setupEventListeners();
 
-    // 9. Remove Skeleton
+    // 6. Background Fetch: Attempt to get live news silently
+    fetchLiveNews().then(success => {
+        if(success) {
+            console.log("Live news integrated successfully.");
+            // Refresh ticker and current view if in a live-supported section
+            DOM.tickerContent.innerHTML = [...tickerItems, ...tickerItems].map(t => `<span>${t}</span>`).join('');
+            renderHeroCarousel();
+            renderSectionGrid(APP_STATE.currentSection);
+            renderSidebarWidgets();
+        }
+    });
+
+    // 7. Remove Skeleton
     DOM.skeleton.classList.add('hidden');
 }
 
@@ -419,37 +422,41 @@ async function init() {
 // ROTUING & SPA LOGIC
 // ══════════════════════════════════════════════════
 function switchSection(sectionId) {
-    if (!document.getElementById(`section-${sectionId}`)) return;
+    const targetSection = document.getElementById(`section-${sectionId}`);
+    if (!targetSection) {
+        console.error(`Section not found: ${sectionId}`);
+        return;
+    }
     
     APP_STATE.currentSection = sectionId;
-    window.location.hash = sectionId;
-
-    // Update Nav Active States
-    document.querySelectorAll('.active').forEach(el => {
-        if(el.dataset.section || el.classList.contains('nav-link')) el.classList.remove('active');
-    });
     
-    document.querySelectorAll(`[data-section="${sectionId}"]`).forEach(el => {
-        el.classList.add('active');
+    // Update Nav Active States (Handle both Desktop and Mobile Navs)
+    const allLinks = document.querySelectorAll('.nav-link, .bottom-nav-item, .sidebar-nav-link');
+    allLinks.forEach(el => {
+        if(el.getAttribute('data-section') === sectionId) {
+            el.classList.add('active');
+        } else {
+            el.classList.remove('active');
+        }
     });
 
     // Hide all sections, show target
     DOM.sections.forEach(sec => {
         sec.classList.remove('active');
-        // Reset animations
-        sec.style.animation = 'none';
-        sec.offsetHeight; /* trigger reflow */
-        sec.style.animation = null; 
     });
 
-    const targetSection = document.getElementById(`section-${sectionId}`);
     targetSection.classList.add('active');
+    
+    // Trigger entry animation
+    targetSection.style.animation = 'none';
+    targetSection.offsetHeight; 
+    targetSection.style.animation = 'sectionIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards';
 
     // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
     closeMobileSidebar();
 
-    // Render logic for specific sections
+    // Render grid for the specific section
     renderSectionGrid(sectionId);
 }
 
