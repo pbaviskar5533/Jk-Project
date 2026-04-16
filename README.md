@@ -1,112 +1,81 @@
-<div align="center">
-  <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&h=300&q=80" alt="JK Pulse Header Banner" width="100%" />
-
-  # 🌐 JK Pulse
-
-  **Next-Generation Regional News Platform & SPA**  
-  *Unapologetic journalism mixed with world-class UX.*
-
-  [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)](#)
-  [![Vanilla CSS](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)](#)
-  [![Vanilla JS](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](#)
-  [![License](https://img.shields.io/badge/License-MIT-green.svg)](#)
-  [![Live Demo](https://img.shields.io/badge/Live-Demo-E8003D.svg?style=flat)](#)
-</div>
+# JK Pulse — High-Performance Regional News SPA
+### Developed by Piyush Baviskar
 
 ---
 
-## 📖 Overview
+## 💡 The Vision
+**JK Pulse** was born out of a desire to bridge the gap between high-end international media UX and regional news storytelling. My goal was to build a platform that feels as fast as a native mobile app but remains accessible through any web browser. 
 
-**JK Pulse** is a state-of-the-art, dark-mode-first Single Page Application (SPA) designed exclusively for regional and global news distribution. Built completely without heavy frameworks or CSS libraries (No Bootstrap/Tailwind), this platform delivers buttery-smooth horizontal sliding animations, complex internal routing, and infinite data fetching all using **Pure Vanilla Javascript, HTML, and CSS**.
+Inspired by the bold editorial style of modern digital journalism, I focused on three core pillars: **Visual Energy**, **Reliable Data**, and **Frictionless Transitions**.
 
-## ✨ Key Features
+## 🛠️ Technical Philosophy
+Unlike many modern projects that rely heavily on bloated frameworks, I chose a **"Vanilla First"** approach. Every interaction, transition, and data-fetch loop in this repository is hand-coded using pure HTML5, CSS3, and JavaScript. This ensures a minimal footprint, lightning-fast load times, and a deeper understanding of the underlying web APIs.
 
-- **⚡ Zero-Reload SPA Routing:** Instantaneous navigation across 12 unique sections (National, World, Politics, Sports, etc.).
-- **📡 Live News Fetching API:** Dynamically pulls and formats real-world headlines from global News API endpoints on the fly.
-- **🎨 Proprietary Glassmorphism System:** Deep navy (`#0A0F1E`) and electric crimson (`#E8003D`) styling combined with frosted backdrop-filters.
-- **📱 True Mobile-First Design:** Features a dedicated bottom app-style navigation bar, hamburger drawer, and fluid grid layouts.
-- **🤝 Social Micro-Interactions:** Custom built X (Twitter) style heart-burst animations, real-time comment slider drawers, and robust local-storage persistence for Bookmarks & Likes.
-
----
-
-## 🏗️ Architecture & Data Flow
+### Key Architecture
+The application operates as a full Single Page Application (SPA). I implemented a custom routing logic that manages the DOM state without ever forcing a browser reload.
 
 ```mermaid
-graph TD
-    UI[HTML Front-End] --> |Trigger Click/Scroll| Router[JS SPA Router]
-    Router --> |Push State / Render View| Engine[JS Render Engine]
+graph LR
+    User([User Interaction]) --> Router{SPA Router}
+    Router -->|Toggle State| View[DOM Container]
     
-    subAPI((Public News API)) -.-> |JSON Payload| Fetch[Async Fetcher Module]
-    Fetch --> |Data Maps to Objects| Engine
+    subgraph "Data & Logic"
+    API[(News API)] -->|Fetch API| Async[Async Hydrator]
+    Async -->|Data Objects| View
+    end
     
-    Engine --> |Hydrate DOM| Grid[CSS Grid Subsystem]
-    Engine --> |Local Storage| State[(App State Management)]
+    subgraph "Persistence"
+    View -->|Sync| Store[(LocalStorage)]
+    Store -->|Load| View
+    end
     
-    State --> |Persist| Bookmarks[Saved Articles]
-    State --> |Persist| Likes[Article Likes]
-    State --> |Persist| Theme[Dark/Light Theme]
-    
-    style UI fill:#E8003D,stroke:#333,stroke-width:2px,color:#fff
-    style Engine fill:#0A0F1E,stroke:#F5C842,stroke-width:2px,color:#fff
-    style State fill:#111829,stroke:#6B7A99,stroke-width:2px,color:#fff
-    style subAPI fill:#28a745,color:#fff
+    style User fill:#E8003D,stroke:#333,color:#fff
+    style Router fill:#0A0F1E,stroke:#E8003D,color:#fff
+    style API fill:#0A0F1E,stroke:#F5C842,color:#fff
+    style Store fill:#111829,stroke:#6B7A99,color:#fff
 ```
 
 ---
 
-## 📸 Interface Showcases
+## 🔥 Features I Implemented
 
-<div align="center">
-    <img src="screenshots/home_dark.png" width="48%" alt="Dark Mode Home Screen" />
-    <img src="screenshots/article_view.png" width="48%" alt="Article Overlay Modal" />
-</div>
-
-> **Left:** The default Dark Mode view showcasing the Parallax Carousel and Breaking Tracker. **Right:** The immersive full-page Article Override Modal with tracking progress bars.
-
----
-
-## 🚀 Getting Started
-
-Because **JK Pulse** uses zero external dependencies, getting it up and running is as easy as starting a static file server!
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/your-username/jk-pulse.git
-cd jk-pulse
-```
-
-### 2. Run a Local Server
-**Using Python:**
-```bash
-python -m http.server 8000
-```
-**Using Node (npx):**
-```bash
-npx serve .
-```
-
-### 3. Start Browsing!
-Navigate your browser to `http://localhost:8000`.
+- **Dynamic News Hydration:** I integrated a live fetching module that pulls real-time headlines from global sources, ensuring the content is always fresh.
+- **Glassmorphism UI System:** Every card and sidebar uses a custom CSS blur and border-lighting system I designed to provide depth without sacrificing performance.
+- **PWA Integration:** The app includes a valid Service Worker and Manifest. This means you can "Install" JK Pulse on your phone, and it will even work offline by caching previous news entries.
+- **Social Interaction Engine:** I built custom "X-style" interactions, including heart-burst micro-animations for likes, bookmarking persistence, and a sliding threaded comment drawer.
+- **Responsive Navigation:** A complete mobile-first layout with a custom bottom navigation bar and hamburger menu for seamless one-handed usage.
 
 ---
 
-## 📂 Project Structure
+## 🏗️ Technical Breakdown
+
+### Core Stack
+- **Structure:** Semantic HTML5
+- **Style:** Pure CSS3 (Variables, Flexbox, Grid, Keyframes)
+- **Logic:** Vanilla JavaScript (ES6+, Async/Await)
+- **PWA:** Service Workers, Caching API, Web Manifest
+
+### Folder Structure
 ```text
-📦 jk-pulse
- ┣ 📜 index.html    # Base skeletal structure, skeletons, modals & navigation
- ┣ 📜 style.css     # 900+ lines of custom glassmorphism, responsive queries & animations 
- ┣ 📜 app.js        # Global state, SPA router mechanics, and API fetching logic
- ┗ 📜 README.md     # You are here!
+.
+├── index.html      # Main Application Shell & Modals
+├── style.css       # Proprietary Design System & Layouts
+├── app.js          # SPA Router, API Logic & State Management
+├── sw.js           # Offline Service Worker
+└── manifest.json   # PWA Configuration
 ```
 
 ---
 
-## 👨‍💻 Developer & Motivation
+## 🚀 Future Roadmap
+I plan to continue evolving JK Pulse by adding:
+1. **User Authentication:** Firebase or Node.js integration for cloud-synced bookmarks.
+2. **Push Notifications:** Alerting users of breaking news in real-time.
+3. **Advanced Analytics:** Tracking read-times and engagement to refine the news algorithm.
 
-Inspired by premium journalistic platforms and highly animated interfaces, **JK Pulse** attempts to prove that complex, enterprise-looking products can heavily rely on the basic building blocks of the web—HTML, CSS, and JS—without sacrificing code maintainability or load times.
+---
 
-<div align="center">
-  <br>
-  <i>Designed and hand-coded to perfection.</i>
-  <br><br>
-</div>
+### Contact & Collaboration
+I'm always looking to connect with other developers and creators. If you have any feedback or want to collaborate, feel free to reach out via my GitHub profile!
+
+**Project by Piyush Baviskar**
