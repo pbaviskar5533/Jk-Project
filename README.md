@@ -56,11 +56,9 @@ graph TD
 
 ## 📸 Interface Showcases
 
-*(Note: Replace placeholder images below with actual project screenshots once deployed)*
-
 <div align="center">
-    <img src="https://images.unsplash.com/photo-1555421689-d68471e189f2?auto=format&fit=crop&w=400&q=80" width="48%" alt="Dark Mode Home Screen" />
-    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=400&q=80" width="48%" alt="Article Overlay Modal" />
+    <img src="screenshots/home_dark.png" width="48%" alt="Dark Mode Home Screen" />
+    <img src="screenshots/article_view.png" width="48%" alt="Article Overlay Modal" />
 </div>
 
 > **Left:** The default Dark Mode view showcasing the Parallax Carousel and Breaking Tracker. **Right:** The immersive full-page Article Override Modal with tracking progress bars.
